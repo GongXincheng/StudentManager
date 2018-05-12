@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+		
+<mapper namespace="com.gxc.stu.mapper.DeptmentMapper">
+
+	<!-- 添加部门 -->
+	<insert id="addDeptment" parameterType="com.gxc.stu.pojo.Deptment">
+		INSERT INTO deptment (
+			deptName,
+			createDate,
+			updateDate,
+			discription
+		)
+		VALUES(
+				#{deptName},
+				#{createDate},
+				#{updateDate},
+				#{discription}
+			);
+	</insert>
+	
+	<!-- 查询所有部门 -->
+	<select id="findDeptLists" resultType="com.gxc.stu.pojo.Deptment">
+		select * from deptment
+	</select>
+
+	<!-- 根据ID查询部门 -->
+	<select id="findDeptById" parameterType="Integer" resultType="com.gxc.stu.pojo.Deptment">
+		select * from deptment where deptId = #{id};
+	</select>
+	
+	<!-- 更新部门 -->
+	<update id="updateDeptById" parameterType="com.gxc.stu.pojo.Deptment">
+		UPDATE deptment
+		SET deptName = #{deptName},
+		 discription = #{discription},
+		 updateDate = #{updateDate}
+		WHERE
+			deptId = #{deptId}
+	</update>
+
+	<!-- 统计院系人数 -->
+	<select id="findDeptStuCount" resultType="pojo.ChartBean">
+		SELECT
+			count(*) AS value,
+			deptName AS name
+		FROM
+			stu s
+		LEFT JOIN specialty p 
+		ON s.speId = p.speId
+		GROUP BY
+			deptName
+	</select>
+	
+</mapper>
