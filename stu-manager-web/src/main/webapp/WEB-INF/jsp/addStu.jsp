@@ -6,6 +6,17 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.css">
+<link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+<script src="http://apps.bdimg.com/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="http://apps.bdimg.com/libs/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/wow.min.js"></script>
+
+<script>
+	$(function(){
+		new WOW().init();
+	})
+</script>
 <title>学生信息</title>
 <style type="text/css">
 	#imgHead:hover{
@@ -15,8 +26,11 @@
 </head>
 <body>
 	<jsp:include page="top.jsp"></jsp:include>
+	<script src="${pageContext.request.contextPath}/js/jquery.cookie.js"></script>
+	<script src="${pageContext.request.contextPath}/js/checkLogin.js"></script>
+	
 	<!-- 路径条 -->
-	<div class="container">
+	<div class="container wow fadeInDown" data-wow-duration="0.6s">
 		<ol class="breadcrumb">
 		  <li><a href="/">首页</a></li>
 		  <li class="active">添加学生</li>
@@ -26,15 +40,15 @@
 	<div class="container">
 		<form action="/stu/addStudent.html" enctype="multipart/form-data" method="POST" class="form-horizontal center-block" id="add_stu_form" style="margin-bottom: 20px">
 			<!-- 头像  左右 -->
-			<div class="container">
+			<div class="container" >
 				<div class="row">
 					<!-- 第一列 -->
-					<div class="col-lg-2 col-md-2 col-sm-3 col-xs-5">
+					<div class="col-md-2 col-sm-3 col-xs-5 container wow fadeInLeft" data-wow-delay="0.4s" data-wow-duration="0.6s" >
 						<img src="${pageContext.request.contextPath}/images/defaultHead.jpg" id="imgHead" width="140" height="140" alt="..." class="img-responsive img-thumbnail">	
 						<input type="file" name="picFile" class="form-control hidden" id="fileInput">
 					</div>
 					<!-- 第二列 -->
-					<div class="col-lg-3 col-md-4 col-sm-5 col-xs-6">
+					<div class="col-lg-3 col-md-4 col-sm-5 col-xs-6 wow fadeInRight" data-wow-delay="0.9s" data-wow-duration="0.6s">
 						<label for="stuId" class="control-label">学号</label>
 						<input type="text" class="form-control" id="stuId" placeholder="学号" name="stuId" style="margin-bottom: 20px;"/>
 						
@@ -44,54 +58,58 @@
 				</div>
 			</div>
 			
-			<!-- 头像下 -->
-			<!-- 专业 -->
-			<div class="form-group">
-				<label for="gender" style="float: left; padding: 20px 15px 0 27px;">性别</label>
-				<div class="col-sm-12">
-					<select class="form-control" id="gender" name="gender">
-						<option value="1" selected="selected">男</option>
-						<option value="0">女</option>
-					</select>
+			<div class="row wow fadeInUp" data-wow-delay="1.3s">
+				<div class="col-md-12">
+					<!-- 头像下 -->
+					<!-- 专业 -->
+					<div class="form-group">
+						<label for="gender" style="float: left; padding: 20px 15px 0 27px;">性别</label>
+						<div class="col-sm-12">
+							<select class="form-control" id="gender" name="gender">
+								<option value="1" selected="selected">男</option>
+								<option value="0">女</option>
+							</select>
+						</div>
+					</div>
+					<!-- 院系 -->
+					<div class="form-group" style="margin-top: 10px;">
+						<label for="deptId" style="float: left; padding: 7px 15px 0 27px;">所在院系</label>
+						<div class="col-sm-12">
+							<select class="form-control" id="deptId" name="deptId">
+								<option value="0">--请选择--</option>
+								<c:forEach items="${deptList}" var="dept">
+									<option value="${dept.deptId}">${dept.deptName}</option>
+								</c:forEach>
+							</select>
+						</div>
+					</div>
+					<!-- 专业 -->
+					<div class="form-group">
+						<label for="speId" style="float: left; padding: 4px 15px 0 27px;">专业</label>
+						<div class="col-sm-12">
+							<select class="form-control" id="speId" name="specialty.speId">
+								<option value="0">--请选择--</option>
+							</select>
+						</div>
+					</div>
+					<!-- 生日 -->
+					<div class="form-group">
+						<label for="birthday" style="float: left; padding: 4px 15px 0 27px;">生日</label>
+						<div class="col-sm-12">
+							<input type="date" name="birthday" id="birthday" class="form-control" style="padding: -5px 0;">	
+						</div>
+					</div>
+					<!-- 入校时间 -->
+					<div class="form-group">
+						<label for="comeDate" style="float: left; padding: 4px 15px 0 27px;">入校时间</label>
+						<div class="col-sm-12">
+							<input type="date" name="comeDate" id="comeDate" class="form-control" style="padding: -5px 0;">	
+						</div>
+					</div>			
+					<!-- 添加按钮 -->
+					<button class="center-block btn btn-info" type="button" id="btnAddStu" style="width: 200px;">添加</button>
 				</div>
 			</div>
-			<!-- 院系 -->
-			<div class="form-group" style="margin-top: 10px;">
-				<label for="deptId" style="float: left; padding: 7px 15px 0 27px;">所在院系</label>
-				<div class="col-sm-12">
-					<select class="form-control" id="deptId" name="deptId">
-						<option value="0">--请选择--</option>
-						<c:forEach items="${deptList}" var="dept">
-							<option value="${dept.deptId}">${dept.deptName}</option>
-						</c:forEach>
-					</select>
-				</div>
-			</div>
-			<!-- 专业 -->
-			<div class="form-group">
-				<label for="speId" style="float: left; padding: 4px 15px 0 27px;">专业</label>
-				<div class="col-sm-12">
-					<select class="form-control" id="speId" name="specialty.speId">
-						<option value="0">--请选择--</option>
-					</select>
-				</div>
-			</div>
-			<!-- 生日 -->
-			<div class="form-group">
-				<label for="birthday" style="float: left; padding: 4px 15px 0 27px;">生日</label>
-				<div class="col-sm-12">
-					<input type="date" name="birthday" id="birthday" class="form-control" style="padding: -5px 0;">	
-				</div>
-			</div>
-			<!-- 入校时间 -->
-			<div class="form-group">
-				<label for="comeDate" style="float: left; padding: 4px 15px 0 27px;">入校时间</label>
-				<div class="col-sm-12">
-					<input type="date" name="comeDate" id="comeDate" class="form-control" style="padding: -5px 0;">	
-				</div>
-			</div>			
-			<!-- 添加按钮 -->
-			<button class="center-block btn btn-info" type="button" id="btnAddStu" style="width: 200px;">添加</button>
 		</form>
 	</div>
 	<jsp:include page="footer.jsp"></jsp:include>
@@ -194,9 +212,13 @@
 				showModal("提示","学号格式不正确(1~11位数字)");
 				return;
 			}
-			if (stuName == '') { 
+			if (stuName.length == 0) { 
 				//alert("姓名不能为空"); 
 				showModal("提示","姓名不能为空");
+				return; 
+			}
+			if(stuName.indexOf("<") >= 0){
+				showModal("提示","请勿使用非法字符,谢谢");
 				return; 
 			}
 			if (speId == 0) { 

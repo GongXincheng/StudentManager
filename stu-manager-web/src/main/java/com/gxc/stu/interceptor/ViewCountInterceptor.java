@@ -24,8 +24,11 @@ public class ViewCountInterceptor implements HandlerInterceptor{
 	private AccessDetailService accessDetailService;
 	@Autowired
 	private AccessCountService accessCountService;
+	
 	@Value("${BACK_URL}")
 	private String BACK_URL;
+	@Value("${LOGIN_URL}")
+	private String LOGIN_URL;
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -44,11 +47,12 @@ public class ViewCountInterceptor implements HandlerInterceptor{
 		accessdetail.setResourcepath(resourcepath);
 		
 		/*
-		 * 如果请求过于频繁,过滤
-		 * ip地址 和 yyyy-MM-dd HH:mm:s相同则不添加
+		 * 如果请求过于频繁,过滤（防止刷新）
+		 * ip地址 和 yyyy-MM-dd HH:mm:s 和 访问URI相同 则不添加
 		 */
-		String selectDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:s").format(new Date());
-		Accessdetail sameDetail = accessDetailService.findDetailByIpAndDate(ip,selectDate);
+		String date1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		String selectDate = date1.substring(0, date1.length()-1);
+		Accessdetail sameDetail = accessDetailService.findDetailByIpAndDateAndUri(ip,selectDate,resourcepath);
 		
 		//如果 sameDetail 不为空则取消添加
 		if(sameDetail != null){	return true; }
@@ -64,7 +68,7 @@ public class ViewCountInterceptor implements HandlerInterceptor{
 		if(accessCount==null){
 			Accesscount newAccessCount = new Accesscount();
 			newAccessCount.setCount(1);
-			//添加，不需要设置日期，service中已经添加
+			newAccessCount.setDate(new SimpleDateFormat("yyyy/MM/dd").format(new Date()));
 			accessCountService.addAccessCount(newAccessCount);
 			return true;
 		}
@@ -81,6 +85,8 @@ public class ViewCountInterceptor implements HandlerInterceptor{
 		if(modelAndView!=null){
 			//设置后台链接
 			modelAndView.addObject("backUrl", BACK_URL);
+			//设置登录链接
+			modelAndView.addObject("loginUrl", LOGIN_URL);
 		}
 	}
 

@@ -1,5 +1,16 @@
 <%@ page contentType="text/html; charset=utf-8" language="java" import="java.sql.*" errorPage="" %>
-<div class="container" style="text-align: center; font-size:10px; line-height: 23px; font-weight: bold; padding:6px; margin-top:20px; background-color: #f8f8f8;">
+<style>
+#footer{
+	margin-top:20px;
+	text-align:center;
+	font-size: 10px;
+	font-weight: blod;
+	line-height: 23px;
+	background: #f8f8f8;
+	padding: 5px 0;
+}
+</style>
+<div class="container" id="footer">
 	<div class="row">
 		<div class="col-md-12">
 			Copyright © 2018 版权所有：宫新程<br/>

@@ -54,11 +54,13 @@
 			<artifactId>slf4j-log4j12</artifactId>
 		</dependency>
 		
-		<!-- JSP相关 -->
+		<!-- Redis客户端 -->
 		<dependency>
-			<groupId>jstl</groupId>
-			<artifactId>jstl</artifactId>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
 		</dependency>
+		
+		<!-- JSP相关 -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>

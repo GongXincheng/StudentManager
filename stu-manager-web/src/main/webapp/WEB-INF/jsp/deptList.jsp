@@ -8,14 +8,29 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
-<title>院系管理</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.css">
+<link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+<script src="http://apps.bdimg.com/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="http://apps.bdimg.com/libs/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/wow.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.cookie.js"></script>
+<script src="${pageContext.request.contextPath}/js/checkLogin.js"></script>
+<script>
+	$(function(){
+		new WOW().init();
+	})
+</script>
 <style type="text/css">
 #nav-page{
-text-align: center;}
+	text-align: center;
+}
 </style>
+<title>院系管理</title>
 </head>
 <body>
 	<jsp:include page="top.jsp"></jsp:include>
+	<script src="${pageContext.request.contextPath}/js/jquery.cookie.js"></script>
+	<script src="${pageContext.request.contextPath}/js/checkLogin.js"></script>
 	
 	<!-- 路径条 -->
 	<div class="container wow fadeInRight" data-wow-duration="0.5s">
@@ -24,15 +39,16 @@ text-align: center;}
 		  <li class="active">院系管理</li>
 		</ol>
 	</div>
+	
 	<div class="container">
-		<div class="row wow fadeInLeft">
-			<div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 15px;">
+		<div class="row wow fadeInLeft" style="margin-bottom: 20px;">
+			<div class="col-md-12">
 				<button class="btn btn-primary pull-left" data-toggle="modal" data-target="#deptAddDialog">添加院系</button>
 			</div>
 		</div>
 		
 		<div class="row wow fadeInUp"  data-wow-delay="0.7s">
-			<div class="col-lg-12">
+			<div class="col-md-12">
 				<div class="panel panel-default table-responsive">
 					<div class="panel-heading" style="font-size: 17px;font-weight: bold;">院系列表</div>
 					<table class="table table-bordered table-striped table-hover" style="text-align: center;">
@@ -47,18 +63,18 @@ text-align: center;}
 							</tr>
 						</thead>
 						<tbody>
-			<c:forEach items="${page.rows}" var="dept">
-				<tr>
-					<td>${dept.deptId}</td>
-					<td>${dept.deptName}</td>
-					<td><fmt:formatDate value="${dept.createDate}" type="date" pattern="yyyy-MM-dd HH:mm"/></td>
-					<td><fmt:formatDate value="${dept.updateDate}" type="date" pattern="yyyy-MM-dd HH:mm"/></td>
-					<td>${dept.discription}</td>
-					<td>
-						<a href="javascript:void(0);" class="btn btn-primary btn-xs" data-toggle="modal" onclick="editDept(${dept.deptId})" data-target="#deptEditDialog">修改</a> 
-					</td>
-				</tr>
-			</c:forEach>
+							<c:forEach items="${page.rows}" var="dept">
+								<tr>
+									<td>${dept.deptId}</td>
+									<td>${dept.deptName}</td>
+									<td><fmt:formatDate value="${dept.createDate}" type="date" pattern="yyyy-MM-dd HH:mm"/></td>
+									<td><fmt:formatDate value="${dept.updateDate}" type="date" pattern="yyyy-MM-dd HH:mm"/></td>
+									<td>${dept.discription}</td>
+									<td>
+										<a href="javascript:void(0);" class="btn btn-primary btn-xs" data-toggle="modal" onclick="editDept(${dept.deptId})" data-target="#deptEditDialog">修改</a> 
+									</td>
+								</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 				</div><!-- /.panel -->
@@ -68,7 +84,7 @@ text-align: center;}
 					<gxc:page url="${pageContext.request.contextPath}/dept/deptList.html"></gxc:page>
 				</div><!-- 分页 -->
 				
-			</div><!-- /.col-lg-12 -->
+			</div><!-- /.col-md-12 -->
 		</div><!-- row -->
 	</div><!-- container -->
 		
@@ -160,12 +176,44 @@ text-align: center;}
 	<!-- /#wrapper -->
 	
 	
+	<!-- 提示模态框 -->
+	<!-- Modal -->
+	<div class="modal fade bs-example-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog  modal-sm" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel"></h4>
+	      </div>
+	      <div class="modal-body">
+	        <div style="text-align: center;margin: 10px 0;" id="modalShowMsg"></div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" id="btnHideModal" class="btn btn-primary" data-dismiss="modal">确定</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
 </body>
 <script type="text/javascript">
 	
 	$(function(){
 		//点击添加提交表单
 		$("#btnAddDept").click(function(){
+			//验证信息
+			var add_deptName = $.trim($("#add_deptName").val());
+			var add_desc = $.trim($("#add_desc").val());
+			if(add_deptName.length == 0 ||  add_desc.length==0){
+				showModal("提示","请正确填写信息");
+				return ;
+			}
+			
+			if(add_deptName.indexOf("<") >= 0 || add_desc.indexOf("<") >= 0){
+				showModal("提示","请勿使用非法字符,谢谢");
+				return ;
+			}
+			
 			$("#add_dept_form")[0].submit();
 		});
 		
@@ -184,6 +232,12 @@ text-align: center;}
 		});
 	}
 
+	//打开Modal
+	function showModal(title,message){
+		$('#myModal').modal('show');
+		$("#myModalLabel").text(title);
+		$("#modalShowMsg").text(message);
+	}
 </script>
 </html>
 

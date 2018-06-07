@@ -8,6 +8,18 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.css">
+<link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+<script src="http://apps.bdimg.com/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="http://apps.bdimg.com/libs/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/wow.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.cookie.js"></script>
+<script src="${pageContext.request.contextPath}/js/checkLogin.js"></script>
+<script>
+	$(function(){
+		new WOW().init();
+	})
+</script>
 <title>学生信息</title>
 <style type="text/css">
 	#imgHead:hover{
@@ -20,6 +32,8 @@
 </head>
 <body>
 	<jsp:include page="top.jsp"></jsp:include>
+	<script src="${pageContext.request.contextPath}/js/jquery.cookie.js"></script>
+	<script src="${pageContext.request.contextPath}/js/checkLogin.js"></script>
 	
 	<!-- 路径条 -->
 	<div class="container wow fadeInRight" data-wow-duration="0.8s">
@@ -107,10 +121,11 @@
 								<tr>
 									<td colspan="7" style="text-align: center;"><span style="display: block;margin: 30px 0;color: red; font-weight: bold;">查询不到该学生信息</span></td>
 								</tr>
+								
 							</c:if>
 							<c:forEach items="${page.rows}" var="stu">
 								<tr>
-									<td>${stu.stuId}</td>
+									<td>${stu.stuId}</td>	
 									<td>${stu.stuName}</td>
 									<td>${stu.gender==1 ? '男' : '女' }</td>
 									<td> <fmt:formatDate value="${stu.comeDate}" type="date" pattern="yyyy-MM-dd"/></td>
@@ -287,6 +302,7 @@
 				return ;
 			}
 			
+			//显示图片
 			if (window.FileReader) {
 				var reader = new FileReader();
 				reader.readAsDataURL(this.files[0]);
@@ -368,6 +384,10 @@
 			if (stuName == '') { 
 				//alert("姓名不能为空"); 
 				showModal("提示","姓名不能为空");
+				return; 
+			}
+			if(stuName.indexOf("<") >= 0){
+				showModal("提示","请勿使用非法字符,谢谢");
 				return; 
 			}
 			if (speId == 0) { 
@@ -476,7 +496,6 @@
 		$("#myDeleteModal").modal("show");
 		$("#modalShowMsg_del").text("是否确认删除：" + deleteStuName);
 	}
-	
 	
 	//打开Modal
 	function showModal(title,message){

@@ -34,7 +34,7 @@ public class SpecialtyController {
 	 */
 	@RequestMapping("/spe/spetList")
 	public String showSpeList(@RequestParam(defaultValue="0")Integer deptId,
-			@RequestParam(defaultValue="1")Integer page, @RequestParam(defaultValue="6")Integer size,
+			@RequestParam(defaultValue="1")Integer page, @RequestParam(defaultValue="12")Integer size,
 			Model model){
 		
 		//1、获取所有的部门,为了通过部门查询专业

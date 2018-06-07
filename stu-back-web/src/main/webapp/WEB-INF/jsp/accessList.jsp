@@ -7,6 +7,16 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.css">
+<link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+<script src="http://apps.bdimg.com/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="http://apps.bdimg.com/libs/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/wow.min.js"></script>
+<script>
+	$(function(){
+		new WOW().init();
+	})
+</script>
 <title>访问列表</title>
 <style type="text/css">
 #nav-page{ text-align: center;}
@@ -14,25 +24,31 @@
 </head>
 <body>
 	<jsp:include page="top.jsp"></jsp:include>
+	<script src="${pageContext.request.contextPath}/js/jquery.cookie.js"></script>
+	<script src="${pageContext.request.contextPath}/js/checkLogin.js"></script>
 	
-	<div class="container">
+	<div class="container wow fadeInRight" >
 		<div class="panel panel-default">
 		  <div class="panel-body">
 		   	
 		   	<form class="form" action="${pageContext.request.contextPath}/back/accessList.html" method="post">
-		   		<div class="form-group col-md-4">
+		   		<div class="form-group col-md-2">
 		   			<label for="ip">用户IP</label>
   					<input type="text" class="form-control" id="ip" name="ip" value="${search.ip}" placeholder="用户IP">
 		   		</div>
-		   		<div class="form-group  col-md-4">
-		   			<label for="comedate">访问时间</label>
-  					<input type="text" class="form-control" id="comedate" name="comedate" value="${search.comedate}" placeholder="访问时间">
+		   		<div class="form-group col-md-2">
+		   			<label for="iplocation">IP所在地</label>
+  					<input type="text" class="form-control" id="iplocation" name="iplocation" value="${search.iplocation}" placeholder="IP所在地">
 		   		</div>
 		   		<div class="form-group  col-md-3">
 		   			<label for="resourcepath">资源路径</label>
   					<input type="text" class="form-control" id="resourcepath" name="resourcepath" value="${search.resourcepath}" placeholder="资源路径">
 		   		</div>
-		   		<div class="form-group  col-md-1 pull-right"  style="margin-bottom: 0px;">
+		   		<div class="form-group  col-md-3">
+		   			<label for="comedate">访问时间</label>
+  					<input type="text" class="form-control" id="comedate" name="comedate" value="${search.comedate}" placeholder="访问时间">
+		   		</div>
+		   		<div class="form-group  col-md-2 pull-right"  style="margin-bottom: 0px;">
 		   			<div class="hidden-xs hidden-sm">
 		   				<label for="btnSearch ">搜索</label>
 		   			</div>
@@ -45,7 +61,7 @@
 	
 	
 	<!-- 列表 -->
-	<div class="container">
+	<div class="container wow fadeInLeft">
 		<div class="panel panel-default table-responsive">
 		  <div class="panel-heading">
 		    <h5 class="panel-title" style="font-weight: bold;padding: 3px 0;">用户访问信息列表</h5>
@@ -55,6 +71,7 @@
 		    		<tr>
 		    			<th style="text-align: center;">ID</th>
 		    			<th style="text-align: center;">用户IP</th>
+		    			<th style="text-align: center;">IP所在地</th>
 		    			<th style="text-align: center;">资源路径</th>
 		    			<th style="text-align: center;">访问时间</th>
 		    			<th style="text-align: center;">操作</th>
@@ -70,6 +87,7 @@
 		    			<tr>
 			    			<td>${access.id }</td>
 			    			<td>${access.ip }</td>
+			    			<td>${access.iplocation }</td>
 			    			<td>${access.resourcepath }</td>
 			    			<td>${access.comedate }</td>
 			    			<td>

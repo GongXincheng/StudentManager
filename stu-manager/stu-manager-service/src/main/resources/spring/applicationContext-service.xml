@@ -23,4 +23,5 @@
 	<dubbo:service interface="com.gxc.stu.service.StudentService" ref="studentServiceImpl" timeout="600000"/>
 	<dubbo:service interface="com.gxc.stu.service.AccessDetailService" ref="accessDetailServiceImpl" timeout="600000"/>
 	<dubbo:service interface="com.gxc.stu.service.AccessCountService" ref="accessCountServiceImpl" timeout="600000"/>
+	<dubbo:service interface="com.gxc.stu.service.UserService" ref="userServiceImpl" timeout="600000"/>
 </beans>

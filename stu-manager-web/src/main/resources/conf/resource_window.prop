@@ -2,3 +2,4 @@ zookeeper.address=127.0.0.1:2181
 UPLOAD_PICPATH=C:/studentHeadPic
 UPLOAD_IP=http://www.gxc.com:9999/
 BACK_URL=http://localhost:8083
+LOGIN_URL=http://localhost:8085

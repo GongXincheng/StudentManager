@@ -16,6 +16,7 @@ import com.gxc.stu.pojo.AccessdetailExample;
 import com.gxc.stu.pojo.AccessdetailExample.Criteria;
 import com.gxc.stu.service.AccessDetailService;
 
+import utils.IpAddressUtils;
 import utils.Page;
 
 @Service
@@ -26,9 +27,15 @@ public class AccessDetailServiceImpl implements AccessDetailService {
 	
 	@Override
 	public void addAccessDetail(Accessdetail accessdetail) {
-		//补全信息
-		accessdetail.setIplocation("");
-		accessdetail.setComedate(new SimpleDateFormat("yyyy-MM-dd HH:mm:dd").format(new Date()));
+		//补全信息,获取ip所在地
+		String ipAddress= "";
+		try {
+			ipAddress = IpAddressUtils.getIpAddress(accessdetail.getIp());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		accessdetail.setIplocation(ipAddress);
+		accessdetail.setComedate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 		//插入到数据库
 		accessdetailMapper.insert(accessdetail);
 	}
@@ -58,6 +65,9 @@ public class AccessDetailServiceImpl implements AccessDetailService {
 		if(StringUtils.isNotBlank(accessDetail.getIp())){
 			criteria.andIpLike("%"+accessDetail.getIp()+"%");
 		}
+		if(StringUtils.isNotBlank(accessDetail.getIplocation())){
+			criteria.andIplocationLike("%"+accessDetail.getIplocation()+"%");
+		}
 		if(StringUtils.isNotBlank(accessDetail.getResourcepath())){
 			criteria.andResourcepathLike("%"+accessDetail.getResourcepath()+"%");
 		}
@@ -65,6 +75,7 @@ public class AccessDetailServiceImpl implements AccessDetailService {
 			criteria.andComedateLike("%"+accessDetail.getComedate()+"%");
 		}
 		
+		//根据comedate逆序
 		example.setOrderByClause("comedate desc");
 		
 		//执行查询
@@ -86,6 +97,20 @@ public class AccessDetailServiceImpl implements AccessDetailService {
 	@Override
 	public void deleteAccessDetailById(Integer id) {
 		accessdetailMapper.deleteByPrimaryKey(id);
+	}
+
+	@Override
+	public Accessdetail findDetailByIpAndDateAndUri(String ip, String comeDate, String uri) {
+		AccessdetailExample example = new AccessdetailExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andIpEqualTo(ip);
+		criteria.andComedateLike("%"+comeDate+"%");
+		criteria.andResourcepathEqualTo(uri);
+		List<Accessdetail> list = accessdetailMapper.selectByExample(example);
+		if(list.size() > 0){
+			return list.get(0);
+		}
+		return null;
 	}
 
 }

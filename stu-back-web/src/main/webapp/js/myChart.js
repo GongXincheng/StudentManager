@@ -7,6 +7,27 @@ var MyBar = function(xData,yData){
 		            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
 		        }
 		    },
+		    toolbox: {
+	            show : true,
+	            feature : {
+	                mark : {show: true},
+	                dataView : {show: true, readOnly: false},
+	                magicType : {
+	                    show: true,
+	                    type: ['pie', 'funnel'],
+	                    option: {
+	                        funnel: {
+	                            x: '25%',
+	                            width: '50%',
+	                            funnelAlign: 'left',
+	                            max: 1548
+	                        }
+	                    }
+	                },
+	                restore : {show: true},
+	                saveAsImage : {show: true}
+	            }
+		    },
 		    grid: {
 		    	top:'5%',
 		        left: '3%',
@@ -51,6 +72,28 @@ var MyPie = function(data1,data2){
 		        trigger: 'item',
 		        formatter: "{a} <br/>{b} : {c} ({d}%)"
 		    },
+		    toolbox: {
+	            show : true,
+	            feature : {
+	                mark : {show: true},
+	                dataView : {show: true, readOnly: false},
+	                magicType : {
+	                    show: true,
+	                    type: ['pie', 'funnel'],
+	                    option: {
+	                        funnel: {
+	                            x: '25%',
+	                            width: '50%',
+	                            funnelAlign: 'left',
+	                            max: 1548
+	                        }
+	                    }
+	                },
+	                restore : {show: true},
+	                saveAsImage : {show: true}
+	            }
+	        },
+
 		    legend: {
 		        bottom: 30,
 		        left: 'center',

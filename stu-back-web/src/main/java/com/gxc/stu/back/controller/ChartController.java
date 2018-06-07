@@ -49,7 +49,8 @@ public class ChartController {
 
 		//遍历列表,添加数据
 		for(int i = size-1; i >= 0; i--){
-			strList.add(list.get(i).getDate());
+			String dataStr = list.get(i).getDate();
+			strList.add(dataStr.substring(dataStr.indexOf("/")+1));
 			intList.add(list.get(i).getCount());
 		}
 		

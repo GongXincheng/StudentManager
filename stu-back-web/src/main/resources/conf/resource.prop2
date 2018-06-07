@@ -1,2 +1,3 @@
 zookeeper.address=39.105.25.213:2181
-INDEX_URL=http://39.105.25.213
+INDEX_URL=http://39.105.25.213:8082
+LOGIN_URL=http://39.105.25.213:8085

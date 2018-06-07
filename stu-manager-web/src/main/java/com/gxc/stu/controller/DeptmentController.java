@@ -34,7 +34,7 @@ public class DeptmentController {
 	 */
 	@RequestMapping("/dept/deptList")
 	public String findDeptList(Model model,
-			@RequestParam(defaultValue="1")Integer page, @RequestParam(defaultValue="6")Integer size){
+			@RequestParam(defaultValue="1")Integer page, @RequestParam(defaultValue="12")Integer size){
 		
 		//分页查询
 		Page<Deptment> deptList = this.deptmentService.findDeptListByPage(page,size);

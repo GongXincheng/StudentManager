@@ -5,7 +5,6 @@ import java.io.Serializable;
 public class MyResult implements Serializable{
 	private static final long serialVersionUID = 1L;
 
-
     // 响应业务状态
     private Integer status;
 
@@ -14,7 +13,6 @@ public class MyResult implements Serializable{
 
     // 响应中的数据
     private Object data;
-
     
     public static MyResult build(Integer status, String msg, Object data) {
         return new MyResult(status, msg, data);

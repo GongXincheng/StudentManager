@@ -34,4 +34,13 @@ public interface AccessDetailService {
 	 */
 	void deleteAccessDetailById(Integer id);
 
+	/**
+	 * 根据ip和时间和URI查询
+	 * @param ip
+	 * @param selectDate
+	 * @param resourcepath
+	 * @return
+	 */
+	Accessdetail findDetailByIpAndDateAndUri(String ip, String selectDate, String resourcepath);
+
 }

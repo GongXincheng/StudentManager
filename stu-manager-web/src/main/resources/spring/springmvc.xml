@@ -66,5 +66,6 @@
 	<dubbo:reference interface="com.gxc.stu.service.StudentService" id="studentService" /> 
 	<dubbo:reference interface="com.gxc.stu.service.AccessDetailService" id="accessDetailService" /> 
 	<dubbo:reference interface="com.gxc.stu.service.AccessCountService" id="accessCountService" /> 
+	<dubbo:reference interface="com.gxc.stu.service.TokenService" id="tokenService" /> 
 
 </beans>

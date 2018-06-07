@@ -9,14 +9,30 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.css">
+<link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+<script src="http://apps.bdimg.com/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="http://apps.bdimg.com/libs/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/wow.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.cookie.js"></script>
+<script src="${pageContext.request.contextPath}/js/checkLogin.js"></script>
+<script>
+	$(function(){
+		new WOW().init();
+	})
+</script>
 <title>专业管理</title>
 <style type="text/css">
 #nav-page{
-text-align: center;}
+	text-align: center;
+}
 </style>
 </head>
 <body>
 	<jsp:include page="top.jsp"></jsp:include>
+	<script src="${pageContext.request.contextPath}/js/jquery.cookie.js"></script>
+	<script src="${pageContext.request.contextPath}/js/checkLogin.js"></script>
+	
 	<!-- 路径条 -->
 	<div class="container wow fadeInRight" data-wow-duration="0.5s">
 		<ol class="breadcrumb">
@@ -259,10 +275,18 @@ text-align: center;}
 		$("#btn_addSpe").click(function(){
 			var deptId = $("#add_DeptId").val();
 			var add_speName = $.trim($("#add_speName").val());
-			if(deptId==0 || add_speName == ""){
+			var add_desc = $.trim($("#add_desc").val());
+			
+			if(deptId == 0 || add_speName.length == 0){
 				showModal("提示","请正确填写！");
 				return ;
 			}
+			
+			if(add_speName.indexOf("<") >= 0 || add_desc.indexOf("<") >= 0){
+				showModal("提示","请勿使用非法字符");
+				return ;
+			}
+			
 			$("#add_spe_form")[0].submit();
 		});
 		

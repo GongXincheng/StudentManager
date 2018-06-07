@@ -1,10 +1,10 @@
 package com.gxc.stu.service.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.github.pagehelper.PageHelper;
 import com.gxc.stu.mapper.AccesscountMapper;
 import com.gxc.stu.pojo.Accesscount;
@@ -19,9 +19,6 @@ public class AccessCountServiceImpl implements AccessCountService {
 	
 	@Override
 	public void addAccessCount(Accesscount accesscount) {
-		//补全
-		String date = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
-		accesscount.setDate(date);	
 		//添加到数据库
 		accesscountMapper.insert(accesscount);
 	}

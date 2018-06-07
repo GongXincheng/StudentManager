@@ -33,6 +33,10 @@
 			<mvc:mapping path="/**"/>
 			<bean class="com.gxc.stu.back.Interceptor.ViewCountInterceptor"></bean>
 		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<bean class="com.gxc.stu.back.Interceptor.LoginInterceptor"></bean>
+		</mvc:interceptor>
 	</mvc:interceptors>
 	
 	<!-- 引用dubbo服务 -->
@@ -42,5 +46,7 @@
 	<dubbo:reference interface="com.gxc.stu.service.SpecialtyService" id="specialtyService" />	       
 	<dubbo:reference interface="com.gxc.stu.service.AccessDetailService" id="accessDetailService" /> 
 	<dubbo:reference interface="com.gxc.stu.service.AccessCountService" id="accessCountService" /> 
+	<dubbo:reference interface="com.gxc.stu.service.UserService" id="userService" /> 
+	<dubbo:reference interface="com.gxc.stu.sso.service.TokenService" id="tokenService" /> 
 
 </beans>
