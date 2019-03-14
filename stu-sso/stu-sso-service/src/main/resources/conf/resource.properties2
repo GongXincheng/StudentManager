@@ -1,4 +1,0 @@
-zookeeper.address=39.105.25.213:2181
-redis.address=39.105.25.213
-redis.port=6379
-SESSION_EXPIRE=1800
