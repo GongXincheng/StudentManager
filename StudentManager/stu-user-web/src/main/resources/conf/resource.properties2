@@ -1,0 +1,14 @@
+#zookeeper
+zookeeper.address=39.105.25.213:2181
+#url
+BACK_URL=http://39.105.25.213:8083
+INDEX_URL=http://39.105.25.213:8082
+LOGIN_URL=http://39.105.25.213:8085
+USER_URL=http://39.105.25.213:8086
+#upload
+UPLOAD_PICPATH=/head
+UPLOAD_IP=http://39.105.25.213:9999/
+#redis
+redis.address=127.0.0.1
+redis.port=6379
+

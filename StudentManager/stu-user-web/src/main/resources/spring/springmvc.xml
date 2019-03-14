@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.2.xsd
+        http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+	
+	<!-- 读取配置文件 -->
+	<context:property-placeholder location="classpath:conf/*.properties"/>
+	
+	<!-- 配置扫描 -->
+	<context:component-scan base-package="com.gxc.stu.user.controller"></context:component-scan>
+
+	<!-- 注解驱动 -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+	
+	<!-- 视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	
+	<!-- 文件上传 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 最大可上传2M -->
+		<!-- <property name="maxUploadSize" value="2100000"></property> -->
+		<property name="defaultEncoding" value="utf-8"/> 
+	</bean>
+	
+	<!-- 拦截器 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<bean class="com.gxc.stu.user.interceptor.LoginInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
+	<!-- 引用dubbo服务 -->
+	<dubbo:application name="stu-sso-web"/>
+	<dubbo:registry protocol="zookeeper" address="${zookeeper.address}"/>	       
+	<dubbo:reference interface="com.gxc.stu.sso.service.TokenService" id="tokenService" />
+	<dubbo:reference interface="com.gxc.stu.service.UserService" id="userService" />
+	
+	<!-- 配置信息 -->
+    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig"> 
+		<!-- <property name="maxTotal" value="300"/> 
+		<property name="maxIdle" value="100"/> 
+		<property name="maxWaitMillis" value="10000"/> 
+		<property name="testOnBorrow" value="true"/>  -->
+		<!-- 最大连接数 -->
+		<property name="maxTotal" value="30" />
+		<!-- 最大空闲连接数 -->
+		<property name="maxIdle" value="10" />
+		<!-- 每次释放连接的最大数目 -->
+		<property name="numTestsPerEvictionRun" value="1024" />
+		<!-- 释放连接的扫描间隔（毫秒） -->
+		<property name="timeBetweenEvictionRunsMillis" value="30000" />
+		<!-- 连接最小空闲时间 -->
+		<property name="minEvictableIdleTimeMillis" value="1800000" />
+		<!-- 连接空闲多久后释放, 当空闲时间>该值 且 空闲连接>最大空闲连接数 时直接释放 -->
+		<property name="softMinEvictableIdleTimeMillis" value="10000" />
+		<!-- 获取连接时的最大等待毫秒数,小于零:阻塞不确定的时间,默认-1 -->
+		<property name="maxWaitMillis" value="-1" />
+		<!-- 在获取连接的时候检查有效性, 默认false -->
+		<property name="testOnBorrow" value="true" />
+		<!-- 在空闲时检查有效性, 默认false -->
+		<property name="testWhileIdle" value="true" />
+		<!-- 连接耗尽时是否阻塞, false报异常,ture阻塞直到超时, 默认true -->
+		<property name="blockWhenExhausted" value="false" />
+	</bean> 
+	
+	<bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+		<constructor-arg name="host" value="${redis.address}"/>
+		<constructor-arg name="port" value="${redis.port}"/>
+		<constructor-arg name="poolConfig" ref="poolConfig"/>
+	</bean>
+	
+    <!-- 连接redis单机版 -->
+	<bean id="jedisClientPool" class="jedis.JedisClientPool">
+		<property name="jedisPool" ref="jedisPool"></property>
+	</bean>		
+	
+</beans>
